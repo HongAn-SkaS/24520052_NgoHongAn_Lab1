@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="theme.css">
   <link rel="stylesheet" href="navbar.css">
   <link rel="stylesheet" href="grid.css">
+  <link rel="stylesheet" href="skeleton.css">
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -50,14 +51,12 @@
 
   <section id="projects" aria-labelledby="projects-heading">
     <h2 id="projects-heading">Projects</h2>
-    <article>
-      <h3>Project One</h3>
-      <p>A web project demonstrating semantic HTML and accessible design practices.</p>
-    </article>
-    <article>
-      <h3>Project Two</h3>
-      <p>A web application project focused on responsive and user-friendly experiences.</p>
-    </article>
+    <p id="projects-status" role="status" aria-live="polite">Loading projects…</p>
+    <ul id="projects-container" class="project-grid" aria-busy="true">
+      <li class="skeleton-item" aria-hidden="true"></li>
+      <li class="skeleton-item" aria-hidden="true"></li>
+      <li class="skeleton-item" aria-hidden="true"></li>
+    </ul>
   </section>
 
   <section id="contact" aria-labelledby="contact-heading">
