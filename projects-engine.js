@@ -57,9 +57,75 @@ function renderProjects(list) {
   status.textContent = `${list.length} projects loaded`;
 }
 
-async function initProjects() {
-  const list = await fetchProjects();
-  renderProjects(list);
+function buildStateBlock(message, retryId) {
+  const item = document.createElement('li');
+  item.classList.add('state-block');
+
+  const paragraph = document.createElement('p');
+  paragraph.textContent = message;
+
+  const button = document.createElement('button');
+  button.id = retryId;
+  button.type = 'button';
+  button.textContent = 'Retry';
+
+  button.addEventListener('click', function () {
+    load();
+  });
+
+  item.append(paragraph, button);
+
+  return item;
 }
 
-initProjects();
+function renderEmpty() {
+  const container = document.querySelector('#projects-container');
+  const status = document.querySelector('#projects-status');
+
+  container.replaceChildren();
+
+  status.textContent = 'No projects yet.';
+
+  container.appendChild(
+    buildStateBlock('No projects to show yet.', 'retry-btn')
+  );
+
+  container.setAttribute('aria-busy', 'false');
+}
+
+function renderError(err) {
+  const container = document.querySelector('#projects-container');
+  const status = document.querySelector('#projects-status');
+
+  container.replaceChildren();
+
+  status.textContent = 'Failed to load projects.';
+
+  container.appendChild(
+    buildStateBlock('Something went wrong.', 'retry-btn')
+  );
+
+  container.setAttribute('aria-busy', 'false');
+}
+
+async function load() {
+  const container = document.querySelector('#projects-container');
+  const status = document.querySelector('#projects-status');
+
+  status.textContent = 'Loading projects…';
+  container.setAttribute('aria-busy', 'true');
+
+  try {
+    const list = await fetchProjects();
+
+    if (list.length === 0) {
+      renderEmpty();
+    } else {
+      renderProjects(list);
+    }
+  } catch (err) {
+    renderError(err);
+  }
+}
+
+load();
