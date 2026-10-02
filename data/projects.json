@@ -1,0 +1,23 @@
+[
+  {
+    "id": "project-1",
+    "title": "Personal Portfolio",
+    "description": "A responsive portfolio built with semantic HTML and modern CSS.",
+    "tags": ["HTML", "CSS", "A11y"],
+    "repoUrl": "https://github.com/username/portfolio"
+  },
+  {
+    "id": "project-2",
+    "title": "Student Management App",
+    "description": "A student management application for organizing student information.",
+    "tags": ["JavaScript", "DOM", "CRUD"],
+    "repoUrl": "https://github.com/username/student-management"
+  },
+  {
+    "id": "project-3",
+    "title": "Weather Dashboard",
+    "description": "A dashboard displaying weather information with a clean interface.",
+    "tags": ["JavaScript", "Fetch API", "JSON"],
+    "repoUrl": "https://github.com/username/weather-dashboard"
+  }
+]
