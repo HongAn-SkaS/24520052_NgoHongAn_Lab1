@@ -82,3 +82,44 @@ All T-01 requirements and verification checks pass. Only T-01 changes are includ
 - Persists to localStorage 'theme' = 'dark' | 'light'
 - Zero console errors
 - Full keyboard accessible (Tab focus, Enter activate)
+
+## Milestone T-03: Resilient Project Component (4 States)
+
+### State Machine (contract)
+IDLE → LOADING → { SUCCESS | EMPTY | ERROR }
+ERROR → (retry) → LOADING
+EMPTY → (retry) → LOADING
+Invariant: only ONE state active at a time; aria-busy mirrored.
+
+### Sub-task T-03A: Loading Skeleton
+**Commit:** `feat(ss): skeleton`
+**Files:** skeleton.css, index.html (replace hardcoded articles)
+**Contract:**
+- Pure CSS shimmer (no JS, no images).
+- Uses only CSS variables for colors (zero hardcoded hex outside :root).
+- 3 placeholder items, each with aria-hidden="true".
+- Respects @media (prefers-reduced-motion: reduce) → no animation.
+- Container has aria-busy="true", role="status" element announces "Loading projects…".
+
+### Sub-task T-03B: Live Data State
+**Commit:** `feat(js): live project render`
+**Files:** data/projects.json, projects-engine.js
+**Contract:**
+- Fetch API with async/await, relative path './data/projects.json'.
+- try/catch wraps fetch; non-OK response throws.
+- Renders <li><article> per project using textContent (NOT innerHTML).
+- Renders metadata badges (tags) with Flexbox gap.
+- On success: aria-busy="false", status announces count.
+- Zero console errors in SUCCESS path.
+
+### Sub-task T-03C: Empty & Error States
+**Commit:** `feat(js): empty & error states`
+**Files:** states.css, projects-engine.js (extend)
+**Contract:**
+- EMPTY: shows friendly message + retry button (button#retry-btn).
+- ERROR: shows error message + same retry button.
+- Retry button: <button type="button">, keyboard-focusable, min tap 44×44px.
+- Click retry → transitions back to LOADING and re-fetches.
+- Empty JSON array `[]` MUST trigger EMPTY, not SUCCESS.
+- Network failure (fetch reject) MUST trigger ERROR.
+- aria-live region announces state change to screen reader.
